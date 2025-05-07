@@ -6,38 +6,41 @@ const router = express.Router();
 
 
 
-router.get('/character', async (req, res) => {
-    const name = req.query.name;
-    let url = 'https://rickandmortyapi.com/api/character'
-    
-    if (name) {
-        url += `?name=${encodeURIComponent(name)}`;
-      }
-    
-      try {
-        const response = await axios.get(url);
+router.get('/characters', async (req, res) => {
+    try {
+        const response = await axios.get('https://rickandmortyapi.com/api/character');
         const characters = response.data.results;
         res.json(characters);
     } catch (error) {
         res.status(404).json({ error: 'Personaje no encontrado' });
     }
-});
+})
 
-   /* router.put('/character/:name', (req, res) => {
-        const name = req.params.name;
-        const character = characters.findIndex(c => c.name === name);
-    
-    if(character !== -1) {
-      characters[character].status = req.body.status
-      characters[character].species = req.body.species
-      characters[character].gender = req.body.gender
-      characters[character].image = req.body.image
-         res.json(characters[character]);
-       
-    } else {
-        res.status(404).send('Personaje no encontrado');
+router.get('/characters/:name', async (req, res) => {
+    const characterName = req.params.name;
+    try {
+        const response = await axios.get(`https://rickandmortyapi.com/api/character/?name=${characterName}`);
+        const results = response.data.results
+        
+        if (results && results.length > 0) {
+            const character = results[0]; 
+            return res.json({
+                name: character.name,
+                status: character.status,
+                species: character.species,
+                gender: character.gender,
+                origin: character.origin.name,
+                image: character.image
+      });
+            
+        } else {
+        res.status(404).send('personaje no encontrado')
     }
-    });*/
-    
+
+} catch (error) {
+       console.error('Error al buscar el personaje:', error.response?.data || error.message);; 
+       res.status(500).json({ error: 'Personaje no encontrado' });
+    }
+})
 module.exports = router;
 

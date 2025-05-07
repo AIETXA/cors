@@ -7,10 +7,17 @@
 </head>
 <body>
     <h1>Rick & Morty input</h1>
-    <label for="characterName">Introduce el nombre del personaje</label>
-    <input type="text" id="characterName" placeholder="rick"/>
-    <button onClick="getCharacters()">Obtener información</button>
-    <div id="characterInfo"></div>
+    <form id="characterform">
+        <label for="characterName">Introduce el nombre del personaje</label>
+        <input type="text" id="characterName" placeholder="rick" required/>
+        <button type="submit">Obtener información</button>
+    </form>
+    <ul id="characterInfo"></ul>
     <script src="./script.js"></script>
+   
 </body>
 </html>
+
+
+
+ 
